@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
 
 // SEARCH product
 router.post('/search', async (req, res) => {
-	const { text } = req.params;
-	const { rows } = await db.query('SELECT * FROM products WHERE name LIKE $1', [text]);
+	const { query } = req.body;
+	const { rows } = await db.query('SELECT * FROM products WHERE name LIKE $1', [query]);
 	return res.send(rows);
 }); 
