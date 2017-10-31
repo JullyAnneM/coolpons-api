@@ -12,22 +12,22 @@ module.exports = router;
 
 // GET ALL products
 router.get('/', async (req, res) => {
-	const { rows } = await db.query('SELECT * FROM products ORDER BY name ASC');
+	const { rows } = await db.query('SELECT * FROM users ORDER BY name ASC');
 	return res.send(rows);
 });
 
 // GET product
 router.get('/:id', async (req, res) => {
 	const { id } = req.params;
-	const { rows } = await db.query('SELECT * FROM products WHERE id = $1', [id]);
+	const { rows } = await db.query('SELECT * FROM users WHERE user_id = $1', [id]);
 	return res.send(rows[0]);
 });
 
 // POST product
 router.post('/', async (req, res) => {
 	const data = req.body;
-	const { rows } = await db.query('INSERT INTO products VALUES($1, $2, $3, $4,  $5, $6, $7, $8, $9) RETURNING *',
-		[data.id, data.name, data.picture, data.price, data.expiration_date, data.type, data.company, data.price_discount, data.status]);
+	const { rows } = await db.query('INSERT INTO products VALUES($1, $2, $3, $4, $5) RETURNING *',
+		[data.user_id, data.name, data.email, data.birthdate, data.picture]);
 	return res.send(rows);
 });
 
@@ -35,6 +35,6 @@ router.post('/', async (req, res) => {
 // SEARCH product
 router.post('/search', async (req, res) => {
 	const { text } = req.params;
-	const { rows } = await db.query('SELECT * FROM products WHERE name LIKE $1', [text]);
+	const { rows } = await db.query('SELECT * FROM users WHERE name LIKE $1', [text]);
 	return res.send(rows);
 }); 
